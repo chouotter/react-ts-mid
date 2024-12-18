@@ -51,3 +51,54 @@ export async function asyncPatch(api: string, body: {} | FormData) {
         console.error(error)
     }
 }
+
+export async function asyncDelete(api: string, body: { userName: string }) {
+    try {
+        const res: Response = await fetch(api, {
+            method: 'DELETE', 
+            credentials: 'include',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+            }),
+            body: JSON.stringify(body),
+            mode: 'cors', 
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            throw new Error(data.message || '刪除請求失敗');
+        }
+
+        return data;
+
+    } catch (error) {
+        console.error('Delete request failed', error);
+        throw error; 
+    }
+}
+
+export async function asyncUpdate(api: string, body: { userName: string; name: string }) {
+    try {
+        const res: Response = await fetch(api, {
+            method: 'PUT',
+            credentials: 'include',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+            }),
+            body: JSON.stringify(body),
+            mode: 'cors',
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            throw new Error(data.message || '更新請求失敗');
+        }
+
+        return data;
+    } catch (error) {
+        console.error('Update request failed', error);
+        throw error;
+    }
+}
